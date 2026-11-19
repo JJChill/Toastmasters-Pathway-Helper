@@ -1,0 +1,15 @@
+/* Styles for the lesson frame (see src/adapters/lesson-frame-entry.ts). */
+#tm-assignment {
+  display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap;
+  margin: 8px 0; padding: 8px 12px; border: 2px solid #b45309; border-radius: 8px;
+  background: #fff7ed; color: #1b1b1b; font: 600 14px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+#tm-assignment .tm-assignment-chip {
+  background: #b45309; color: #fff; border-radius: 999px; padding: 2px 10px;
+  font: 800 11px system-ui, sans-serif; letter-spacing: .05em; white-space: nowrap;
+}
+.tm-purpose-line { background: #fff3b0; border-left: 4px solid #f5c400; padding: 4px 8px; }
+.tm-print-chip {
+  display: inline-block; margin-left: 10px; padding: 2px 10px; border-radius: 999px;
+  background: #0f766e; color: #fff; font: 700 12px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif;
+}

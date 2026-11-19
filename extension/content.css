@@ -1,0 +1,155 @@
+/* Pathways Highlighter — all rules are gated by html.tm-on so the toggle is instant. */
+
+/* ---- Colour key (white text on each passes WCAG AA) ---- */
+[data-tm="path"], [data-tm-row="path"], [data-tm-crumb="path"]       { --tm-c: #6a2c91; } /* purple  */
+[data-tm="level"], [data-tm-row="level"], [data-tm-crumb="level"]    { --tm-c: #0b5fa5; } /* blue    */
+[data-tm="project"], [data-tm-row="project"], [data-tm-crumb="project"],
+[data-tm="choose"], [data-tm-row="choose"], [data-tm-crumb="choose"] { --tm-c: #b45309; } /* orange  */
+[data-tm="req"], [data-tm-row="req"], [data-tm-crumb="req"]          { --tm-c: #b3123f; } /* crimson */
+[data-tm="step"], [data-tm-crumb="step"]                             { --tm-c: #4b5563; } /* grey    */
+[data-tm="after"]                                                    { --tm-c: #0f766e; } /* teal    */
+
+/* ---- Label chip shown in front of titles ---- */
+html.tm-on [data-tm]::before {
+  content: attr(data-tm-label);
+  display: inline-block;
+  margin-right: 8px;
+  padding: 1px 9px;
+  border-radius: 999px;
+  background: var(--tm-c);
+  color: #fff;
+  font: 700 11px/1.7 system-ui, -apple-system, "Segoe UI", sans-serif;
+  letter-spacing: .04em;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+/* In narrow places (sidebar, cards) put the chip on its own line above the title */
+html.tm-on .nav-title[data-tm]::before,
+html.tm-on .course-title[data-tm]::before,
+html.tm-on h3[data-tm].MuiTypography-root::before {
+  display: block;
+  width: max-content;
+  margin: 0 0 4px;
+}
+
+/* Dashboard cards clamp titles to a fixed height; let the chip + full title fit */
+html.tm-on h3[data-tm].MuiTypography-root {
+  display: block;
+  -webkit-line-clamp: unset;
+  max-height: none;
+  overflow: visible;
+  white-space: normal;
+  text-overflow: clip;
+}
+
+/* ---- DONE vs TO DO: done chips are faded, to-do chips are hollow with a dashed outline ---- */
+html.tm-on [data-tm][data-tm-s="done"]::before { opacity: .55; }
+html.tm-on [data-tm][data-tm-s="todo"]::before {
+  background: #fff;
+  color: var(--tm-c);
+  box-shadow: inset 0 0 0 2px var(--tm-c);
+  border: 2px dashed var(--tm-c);
+  padding: 0 7px;
+}
+
+/* ---- Banner above the checklist ---- */
+.tm-banner {
+  display: none;
+}
+html.tm-on .tm-banner {
+  display: flex; gap: 10px; align-items: flex-start;
+  margin: 12px 0; padding: 10px 14px;
+  background: #fff5f7; border: 3px solid #b3123f; border-radius: 10px;
+  color: #1b1b1b; font: 600 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+html.tm-on .tm-banner.tm-b-after { background: #effaf8; border-color: #0f766e; }
+.tm-banner.tm-b-after .tm-banner-chip { background: #0f766e; }
+html.tm-on .tm-banner.tm-b-hint { background: #fff7ed; border-color: #b45309; }
+.tm-banner.tm-b-hint .tm-banner-chip { background: #b45309; }
+.tm-banner .tm-banner-chip {
+  flex: none; padding: 1px 10px; border-radius: 999px; background: #b3123f; color: #fff;
+  font: 700 11px/1.7 system-ui, sans-serif; letter-spacing: .04em;
+}
+
+/* ---- Coloured left edge on whole rows / cards ---- */
+html.tm-on [data-tm-row] {
+  border-left: 6px solid var(--tm-c);
+  padding-left: 8px;
+  border-radius: 4px;
+}
+html.tm-on .MuiPaper-root[data-tm-row="path"] {
+  border-left: 0;
+  padding-left: 0;
+  box-shadow: 0 0 0 4px var(--tm-c);
+}
+
+/* ---- Breadcrumb pills ---- */
+html.tm-on [data-tm-crumb] {
+  background: var(--tm-c) !important;
+  color: #fff !important;
+  padding: 2px 10px;
+  border-radius: 999px;
+  text-decoration: none;
+}
+html.tm-on [data-tm-crumb="step"]::before { content: "STEP "; font-weight: 700; }
+
+/* ---- NEXT highlight ---- */
+html.tm-on [data-tm-state="next"] {
+  background: #fff3b0 !important;
+  box-shadow: 0 0 0 3px #f5c400;
+  animation: tm-pulse 1.8s ease-in-out infinite;
+}
+html.tm-on [data-tm-state="next"] a,
+html.tm-on [data-tm-state="next"] .nav-title { color: #1b1b1b !important; }
+html.tm-on [data-tm-state="next"] [data-tm]::before { background: #1b1b1b; color: #ffd60a; }
+@keyframes tm-pulse { 50% { box-shadow: 0 0 0 7px rgba(245, 196, 0, .45); } }
+@media (prefers-reduced-motion: reduce) { html.tm-on [data-tm-state="next"] { animation: none; } }
+
+/* ---- Warning note, e.g. level marked complete but items remain ---- */
+html.tm-on [data-tm-note]::after {
+  content: attr(data-tm-note);
+  margin-left: 10px;
+  padding: 1px 8px;
+  border-radius: 6px;
+  background: #fff3b0;
+  color: #7a1d1d;
+  font: 700 12px/1.6 system-ui, sans-serif;
+  vertical-align: middle;
+}
+
+/* ---- Floating legend ---- */
+#tm-legend {
+  position: fixed; right: 12px; bottom: 48px; z-index: 2147483000;
+  width: 300px; max-height: 75vh; overflow: auto;
+  background: #fff; color: #1b1b1b; border: 1px solid #c9ccd1; border-radius: 10px;
+  box-shadow: 0 6px 24px rgba(0,0,0,.25);
+  font: 13px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+#tm-legend * { box-sizing: border-box; }
+#tm-legend .tm-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  width: 100%; padding: 8px 12px; border: 0; background: #0f2a43; color: #fff;
+  font: 700 13px system-ui, sans-serif; cursor: pointer; border-radius: 9px 9px 0 0;
+}
+/* Chevron: points down while open (click to minimise), up while minimised (click to open). */
+#tm-legend .tm-chev {
+  flex: none; width: 9px; height: 9px; margin: 0 4px 3px 0;
+  border-right: 2.5px solid #fff; border-bottom: 2.5px solid #fff;
+  transform: rotate(45deg); transition: transform .15s;
+}
+#tm-legend.tm-collapsed .tm-chev { transform: rotate(-135deg); margin: 3px 4px 0 0; }
+#tm-legend.tm-collapsed .tm-head { border-radius: 9px; }
+#tm-legend.tm-collapsed .tm-body { display: none; }
+#tm-legend .tm-body { padding: 10px 12px 12px; }
+#tm-legend .tm-sw {
+  display: inline-block; min-width: 76px; padding: 1px 8px; margin-right: 6px; border-radius: 999px;
+  color: #fff; font: 700 11px/1.7 system-ui, sans-serif; text-align: center; letter-spacing: .04em;
+}
+#tm-legend .tm-row { margin: 6px 0; display: flex; align-items: baseline; }
+#tm-legend .tm-row span.tm-d { flex: 1; }
+#tm-legend h4 { margin: 10px 0 4px; font: 700 12px system-ui, sans-serif; text-transform: uppercase; color: #555; letter-spacing: .05em; }
+#tm-legend .tm-where { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+#tm-legend .tm-where .tm-sw { min-width: 0; margin: 0; max-width: 100%; white-space: normal; text-align: left; }
+#tm-legend .tm-next { background: #fff3b0; border: 2px solid #f5c400; border-radius: 6px; padding: 5px 8px; margin-top: 6px; }
+#tm-legend .tm-toggle { display: flex; gap: 6px; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid #e3e5e8; }
+#tm-legend small { color: #666; }

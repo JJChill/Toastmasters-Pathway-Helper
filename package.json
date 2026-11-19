@@ -1,0 +1,22 @@
+{
+  "name": "toastmasters-pathways-helper",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pathways Highlighter: a Chrome extension that colour-codes Toastmasters Base Camp and shows what is NEXT.",
+  "type": "module",
+  "scripts": {
+    "build": "esbuild src/adapters/content-entry.ts --bundle --format=iife --target=chrome110 --outfile=extension/content.js && esbuild src/adapters/lesson-frame-entry.ts --bundle --format=iife --target=chrome110 --outfile=extension/lesson.js",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.core.json",
+    "test": "vitest run",
+    "scope": "probity-scope-report --config probity.config.ts --strict",
+    "check": "npm run typecheck && npm test && npm run spec && npm run build && npm run scope",
+    "spec": "probity-spec-parity --specs docs/specs --tests tests"
+  },
+  "devDependencies": {
+    "@jjchill/probity-rules": "^0.4.61",
+    "@nizos/probity": "^1.10.1",
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0"
+  }
+}

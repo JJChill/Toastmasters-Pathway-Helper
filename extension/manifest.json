@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "Pathways Highlighter",
+  "version": "1.0.0",
+  "description": "Color-codes Toastmasters Base Camp so you can tell a Path from a Level from a Project, and see what's NEXT.",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://basecamp.toastmasters.org/*",
+        "https://*.basecamp.toastmasters.org/*"
+      ],
+      "css": [
+        "content.css"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://basecamp.toastmasters.org/xblock/*"
+      ],
+      "all_frames": true,
+      "css": [
+        "lesson.css"
+      ],
+      "js": [
+        "lesson.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

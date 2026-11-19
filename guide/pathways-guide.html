@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Using Base Camp: a step-by-step guide</title>
+<style>
+  :root { --navy: #0f2a43; --mute: #555; --ink: #1b1b1b; --red: #d6204a; --soft: #eef0f3; --teal: #0f766e; --amber: #b45309; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--soft); color: var(--ink); font: 13px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  .sheet { width: 210mm; margin: 0 auto 14px; background: #fff; padding: 13mm 15mm; }
+  h1 { margin: 0; font-size: 26px; color: var(--navy); }
+  .sub { margin: 4px 0 10px; color: var(--mute); }
+  h2 { margin: 0 0 6px; font-size: 19px; color: var(--navy); border-bottom: 2px solid var(--navy); padding-bottom: 3px; display: flex; align-items: center; gap: 8px; }
+  h2 .n { flex: none; width: 30px; height: 30px; border-radius: 7px; background: var(--navy); color: #fff; text-align: center; line-height: 30px; font-size: 17px; }
+  h3 { margin: 12px 0 4px; font-size: 14px; color: var(--navy); }
+  p { margin: 4px 0 6px; }
+  .lbl { margin: 8px 0 2px; font: 700 11px system-ui, sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--mute); }
+  .lbl i { display: inline-block; width: 16px; height: 16px; margin-right: 5px; border-radius: 50%; color: #fff; font: normal 700 10px/16px system-ui, sans-serif; text-align: center; vertical-align: 1px; }
+  .lbl i.k { background: var(--navy); } .lbl i.r { background: var(--red); }
+  figure:not(.small) figcaption { width: 92%; margin: 0 auto 14px; padding: 3px 0 3px 9px; border-left: 4px solid var(--navy); font-size: 13px; }
+  figure.narrow .frame { width: 60%; }
+  figure.tight .frame { width: 48%; }
+  figure.narrow.cropfig .frame { width: 75%; }
+  .when { color: var(--mute); margin: 0 0 6px; font-style: italic; }
+  ol.do { margin: 6px 0 8px; padding: 0; list-style: none; counter-reset: d; }
+  ol.do li { counter-increment: d; position: relative; padding: 3px 0 3px 32px; }
+  ol.do li::before { content: counter(d); position: absolute; left: 0; top: 2px; width: 23px; height: 23px; border-radius: 50%; background: var(--navy); color: #fff; font: 700 13px/23px system-ui, sans-serif; text-align: center; }
+  figure { margin: 8px 0 12px; break-inside: avoid; }
+  .frame { position: relative; width: 74%; margin: 0 auto; border: 1px solid #c9ccd1; border-radius: 6px; line-height: 0; }
+  .frame .clip { position: absolute; inset: 0; overflow: hidden; border-radius: 5px; }
+  .frame img { width: 100%; height: auto; display: block; border-radius: 5px; }
+  .hl { position: absolute; border: 3px solid var(--red); border-radius: 6px; box-shadow: 0 0 0 2px rgba(255,255,255,.8); }
+  .hl b { position: absolute; left: -3px; top: -3px; transform: translate(-62%, -62%); width: 22px; height: 22px; border-radius: 50%; background: var(--red); color: #fff; font: 700 13px/22px system-ui, sans-serif; text-align: center; }
+  ol.callouts { width: 90%; margin: 6px auto 0; padding: 0; list-style: none; counter-reset: c; }
+  ol.callouts li { counter-increment: c; position: relative; padding: 2px 0 2px 30px; }
+  ol.callouts li::before { content: counter(c, upper-alpha); position: absolute; left: 0; top: 2px; width: 21px; height: 21px; border-radius: 50%; background: var(--red); color: #fff; font: 700 12px/21px system-ui, sans-serif; text-align: center; }
+  .pair { display: grid; grid-template-columns: .8fr 1.2fr; gap: 14px; align-items: start; }
+  figure.wide .frame { width: 92%; }
+  figcaption { /*cap*/ font-weight: 700; color: var(--navy); font-size: 12.5px; margin: 0 0 4px; }
+  figure.small .frame { width: 100%; }
+  .hl b.r { left: auto; right: -3px; transform: translate(62%, -62%); }
+  .hl b.br { left: auto; top: auto; right: -3px; bottom: -3px; transform: translate(62%, 62%); }
+  .hl b.bl { top: auto; bottom: -3px; transform: translate(-62%, 62%); }
+  figure.small .hl { border-width: 2px; }
+  figure.small .hl b { width: 18px; height: 18px; font-size: 11px; line-height: 18px; }
+  figure.small ol.callouts { width: 100%; display: flex; flex-wrap: wrap; gap: 2px 12px; }
+  figure.small ol.callouts li { padding-left: 26px; }
+  .tip { margin: 8px 0; padding: 7px 11px; background: #fff3b0; border: 2px solid #f5c400; border-radius: 8px; }
+  .glossary { width: 100%; border-collapse: collapse; margin: 8px 0; }
+  .glossary th, .glossary td { text-align: left; vertical-align: top; padding: 2px 8px; border-bottom: 1px solid #e1e3e7; }
+  .glossary th { width: 25%; color: var(--navy); white-space: nowrap; }
+  .glossary th .no { display: inline-block; width: 20px; height: 20px; margin-right: 6px; border-radius: 50%; background: var(--red); color: #fff; font: 700 11px/20px system-ui, sans-serif; text-align: center; }
+  .glossary th .no.none { background: none; }
+  .glossary td small { color: var(--mute); }
+  .jump { margin: 6px 0; padding-left: 20px; columns: 2; column-gap: 24px; }
+  .jump li { margin: 2px 0; break-inside: avoid; }
+  .jump a { color: var(--navy); font-weight: 600; }
+  .chip { display: inline-block; padding: 1px 10px; border-radius: 999px; color: #fff; font-weight: 700; font-size: 11px; letter-spacing: .04em; vertical-align: middle; }
+  .c-path { background: #6a2c91; } .c-level { background: #0b5fa5; } .c-project { background: #b45309; } .c-req { background: #b3123f; } .c-step { background: #4b5563; }
+  .c-next { background: #1b1b1b; color: #ffd60a; } .c-after { background: var(--teal); } .c-form { background: #b45309; } .c-print { background: var(--teal); }
+  .mock { border: 1px solid #c9ccd1; border-radius: 10px; overflow: hidden; font-size: 12.5px; max-width: 105mm; }
+  .mock .hd { background: var(--navy); color: #fff; padding: 5px 10px; font-weight: 700; }
+  .mock .row { display: flex; gap: 6px; align-items: center; padding: 5px 10px; border-left: 6px solid; border-top: 1px solid #eee; }
+  .mock .row.next { background: #fff3b0; box-shadow: inset 0 0 0 2px #f5c400; }
+  .mock .ok { margin-left: auto; font-weight: 700; color: #1a7f37; } .mock .todo { margin-left: auto; font-weight: 700; color: var(--mute); }
+  .r-level { border-left-color: #0b5fa5; background: #eef5fb; font-weight: 700; } .r-req { border-left-color: #b3123f; } .r-project { border-left-color: #b45309; }
+  footer { margin-top: 12px; padding-top: 6px; border-top: 1px solid #ddd; color: var(--mute); font-size: 11.5px; }
+  @media print {
+    body { background: #fff; }
+    .sheet { margin: 0; width: auto; padding: 12mm 14mm; break-after: page; }
+    .sheet:last-of-type { break-after: auto; }
+    @page { size: A4; margin: 0; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<section class="sheet" id="top">
+  <h1>Using Toastmasters Base Camp</h1>
+  <p class="sub">A step-by-step companion to the cheat sheet, using screenshots of the real Base Camp. The example path is Visionary Communication; every path works the same way.</p>
+  <p class="sub" style="margin-top:0"><b>Reading the pages:</b> <span class="lbl" style="margin:0"><i class="k">1</i>black numbers</span> are steps you follow; <span class="lbl" style="margin:0"><i class="r">A</i>red letters</span> point out things in the screenshots and carry on from picture to picture. (Only the red numbers in the glossary below match its table.)</p>
+
+  <h2>The words used on Base Camp</h2>
+  <div class="pair"><figure class="small"><figcaption>Viewing a level: the sidebar and breadcrumb</figcaption><div class="frame" style="aspect-ratio:1.05"><div class="clip"><img src="img/03-project-steps.png" alt="A project open in the sidebar, showing path, level, project and step" style="position:absolute;width:208.33%;left:0%;top:0%"></div><span class="hl" style="left:3.33%;top:2.93%;width:31.67%;height:12.8%"><b class="">1</b></span><span class="hl" style="left:0.83%;top:40.12%;width:45.21%;height:11.34%"><b class="">2</b></span><span class="hl" style="left:0.83%;top:62.68%;width:43.75%;height:11.22%"><b class="">3</b></span><span class="hl" style="left:3.25%;top:85.09%;width:41.71%;height:13.32%"><b class="">4</b></span></div></figure><figure class="small"><figcaption>The path Overview: every level and its items</figcaption><div class="frame" style="aspect-ratio:2.6"><div class="clip"><img src="img/02-overview-levels.png" alt="The Overview showing the items inside a level" style="position:absolute;width:192.31%;left:-46.15%;top:-120.59%"></div><span class="hl" style="left:8.08%;top:26.18%;width:32.69%;height:17.35%"><b class="">5</b></span><span class="hl" style="left:8.08%;top:61.18%;width:19.23%;height:17.35%"><b class="">6</b></span><span class="hl" style="left:8.08%;top:78.82%;width:30.77%;height:17.35%"><b class="">7</b></span></div></figure></div>
+  <table class="glossary">
+    <tr><th><span class="no">1</span>Path</th><td>Your whole program, for example Presentation Mastery or Visionary Communication. Its name is at the top of the sidebar.</td></tr>
+    <tr><th><span class="no">2</span>Level</th><td>A stage of a path, Level 1 to Level 5. You do them in order.</td></tr>
+    <tr><th><span class="no">3</span>Project</th><td>A speech or assignment you give in your club, such as “Develop a Communication Plan”. It is a row on the Overview and a block in the sidebar.</td></tr>
+    <tr><th><span class="no">4</span>Step</th><td>One page inside a project: “Introduction and Assignment”, “Complete Your Project”, “Before You Move On” and so on. The breadcrumb shows where you are, for example 1 of 10.</td></tr>
+    <tr><th><span class="no">5</span>Level requirements</th><td>The “Level N: …” row at the top of each level. Its steps are <b>Level N Requirements</b> and <b>Checklist and Completion</b>. It sits next to the projects and is easy to miss.</td></tr>
+    <tr><th><span class="no">6</span>Electives</th><td>Projects you choose from a list. The row tells you how many you need (Level 3: two).</td></tr>
+    <tr><th><span class="no">7</span>Level Completion</th><td>The last row of a level, where you submit the level to your Base Camp manager. The last level is followed by <b>Path Completion</b>.</td></tr>
+    <tr><th><span class="no none"></span>Evaluation Resource</th><td>A printable PDF in a project's <b>Resources</b> list, for your evaluator to use.</td></tr>
+    <tr><th><span class="no none"></span>Overview</th><td>The page listing every level and project in your path, with a tick beside each.</td></tr>
+  </table>
+
+  <h2 style="margin-top:14px">Which page do I need?</h2>
+  <ol class="jump">
+    <li><a href="#new">I'm new. How do I start my first project?</a></li>
+    <li><a href="#before">I'm giving a speech soon. What do I do first?</a></li>
+    <li><a href="#after">I've given my speech. What do I do now?</a></li>
+    <li><a href="#level">I've finished a level's projects. How do I complete the level?</a></li>
+    <li><a href="#path">I've finished every level. How do I complete my path?</a></li>
+    <li><a href="#lost">I'm lost. Where am I and what is next?</a></li>
+  </ol>
+</section>
+
+<section class="sheet" id="new">
+  <h2><span class="n">1</span>I'm new: start my first project</h2>
+  <p class="when">Use this the first time you open a path, or any time you start a project.</p>
+  <div class="lbl">Steps to follow</div>
+  <ol class="do">
+    <li>Log in to Base Camp and open your path from <b>Paths &amp; Learning</b>.</li>
+    <li>Click <b>Overview</b> in the sidebar, then <b>Resume</b> or the first project in Level 1 (for example the Ice Breaker).</li>
+    <li>Read through the project's steps in order: click each one in the sidebar.</li>
+    <li>Open <b>Introduction and Assignment</b> and find the <b>Purpose</b> and the <b>speech time</b>.</li>
+  </ol>
+  <figure class=""><figcaption>Steps 1–2 · The path Overview</figcaption><div class="frame"><img src="img/01-overview-top.png" alt="The path Overview page with the Resume button and Expand all link"><span class="hl" style="left:81.59%;top:12.29%;width:13.87%;height:8.67%"><b class="">A</b></span><span class="hl" style="left:62.6%;top:28.06%;width:9.14%;height:6.45%"><b class="">B</b></span><span class="hl" style="left:25.25%;top:40.99%;width:5.37%;height:20.86%"><b class="">C</b></span></div><ol class="callouts" style="counter-reset:c 0"><li><b>Resume</b> takes you straight back to where you last were.</li><li><b>Expand all</b> opens every level so you can see all of its items.</li><li>A green tick on a level means Base Camp counts it as complete. Check inside the level too.</li></ol></figure>
+  <figure class=""><figcaption>Steps 3–4 · Inside a project: the steps in the sidebar</figcaption><div class="frame"><img src="img/03-project-steps.png" alt="A project's first page, with its steps listed in the left sidebar"><span class="hl" style="left:0.05999999999999994%;top:59.73%;width:22.34%;height:39.15%"><b class="">D</b></span><span class="hl" style="left:1.26%;top:69.27%;width:20.62%;height:11.92%"><b class="">E</b></span><span class="hl" style="left:64.32000000000001%;top:3.42%;width:7.08%;height:7.31%"><b class="">F</b></span></div><ol class="callouts" style="counter-reset:c 3"><li>The project's steps are listed in the sidebar. Click the project to open or close the list.</li><li>Click <b>Introduction and Assignment</b>.</li><li>The number tells you which step you are on, for example 1 of 10.</li></ol></figure>
+</section>
+<section class="sheet">
+  <h2><span class="n">1</span>I'm new (continued)</h2>
+  <figure class=""><figcaption>Step 4 · Introduction and Assignment: Purpose and speech time</figcaption><div class="frame"><img src="img/05-intro-assignment.png" alt="The Introduction and Assignment step showing Purpose and Overview"><span class="hl" style="left:25.12%;top:58.32%;width:70.78%;height:10.440000000000001%"><b class="">G</b></span><span class="hl" style="left:25.12%;top:72.46%;width:32.25%;height:7.17%"><b class="">H</b></span></div><ol class="callouts" style="counter-reset:c 6"><li><b>Purpose:</b> copy this line onto your paper form.</li><li><b>Speech time:</b> in the Overview paragraph, here “a 5- to 7-minute speech”.</li></ol></figure>
+  <div class="tip">Write the <b>Purpose</b> on your paper form, and practise to the <b>speech time</b>. Each project words these a little differently, so read the Overview paragraph.</div>
+</section>
+
+<section class="sheet" id="before">
+  <h2><span class="n">2</span>Before my speech: print the Evaluation Resource</h2>
+  <p class="when">Use this when you have a speech booked at your next meeting.</p>
+  <div class="lbl">Steps to follow</div>
+  <ol class="do">
+    <li>Go to the project's first page and scroll to the bottom to the <b>Resources</b> list.</li>
+    <li>Click <b>Evaluation Resource</b> and print it.</li>
+    <li>Give the printed copy to your evaluator before you speak so they can use it when they evaluate you.</li>
+  </ol>
+  <figure class=""><figcaption>Steps 1–2 · The Resources list on the project’s first page</figcaption><div class="frame"><img src="img/04-resources.png" alt="The Resources list at the bottom of a project's first page"><span class="hl" style="left:25.29%;top:38.08%;width:60.09%;height:32.760000000000005%"><b class="">A</b></span><span class="hl" style="left:25.29%;top:45.67%;width:60.09%;height:9.7%"><b class="">B</b></span></div><ol class="callouts" style="counter-reset:c 0"><li>The <b>Resources</b> list holds the project's PDFs.</li><li>Click <b>Evaluation Resource</b>, then print it. Give it to your evaluator before you speak.</li></ol></figure>
+  <div class="tip"><b>Take to the meeting:</b> your paper form with the Purpose, the printed Evaluation Resource for your evaluator, and your speech practised to the speech time.</div>
+</section>
+
+<section class="sheet" id="after">
+  <h2><span class="n">3</span>After my speech: log it and mark the project complete</h2>
+  <p class="when">Use this once you have spoken and been evaluated.</p>
+  <div class="lbl">Steps to follow</div>
+  <ol class="do">
+    <li>Open <b>Complete Your Project</b> in the sidebar, scroll down to the speech log, fill it in and press <b>Save Log</b>.</li>
+    <li>Open <b>Before You Move On</b>, the last step, and press <b>Complete My Project</b>.</li>
+  </ol>
+  <figure class="narrow tight"><figcaption>Step 1 · Complete Your Project: the speech log</figcaption><div class="frame"><img src="img/07-speech-log.png" alt="The speech log form lower on the Complete Your Project step"><span class="hl" style="left:30.2%;top:-0.31000000000000005%;width:61.32%;height:53.6%"><b class="">A</b></span><span class="hl" style="left:30.2%;top:52.96%;width:61.32%;height:14.31%"><b class="">B</b></span><span class="hl" style="left:68.55%;top:91.51%;width:22.970000000000002%;height:9.55%"><b class="">C</b></span></div><ol class="callouts" style="counter-reset:c 0"><li>Log your speech: Speech Title, Speech Date, Club and Evaluator.</li><li>Pick the <b>Evaluation Form</b> from the list. It asks you to select an Evaluation Resource.</li><li><b>Save Log</b> saves the entry. <b>Save &amp; Email</b> also sends an email, so press it only when you are ready.</li></ol></figure>
+  <figure class="narrow"><figcaption>Step 2 · Before You Move On: Complete My Project</figcaption><div class="frame"><img src="img/11-before-you-move-on.png" alt="The Before You Move On step with the Complete My Project button"><span class="hl" style="left:39.81%;top:52.58%;width:37.58%;height:11.7%"><b class="">D</b></span><span class="hl" style="left:51.980000000000004%;top:65.48%;width:13.24%;height:8.57%"><b class="bl">E</b></span></div><ol class="callouts" style="counter-reset:c 3"><li>The last step of every project, <b>Before You Move On</b>, lists the five stages: review, deliver, receive your evaluation, assess and reflect, congratulations.</li><li>When every task is done, press <b>Complete My Project</b>.</li></ol></figure>
+  <figure class="narrow"><figcaption>After step 2 · What you see once the project is complete</figcaption><div class="frame" style="aspect-ratio:3.49"><div class="clip"><img src="img/12-project-marked-complete.png" alt="The Before You Move On step after the project has been marked complete" style="position:absolute;width:178.57%;left:-39.29%;top:-157.58%"></div><span class="hl" style="left:39.64%;top:40.91%;width:51.96%;height:40.91%"><b class="">F</b></span></div><ol class="callouts" style="counter-reset:c 5"><li>Once a project is complete the button is replaced by <b>Your project is marked complete.</b> Its tick on the Overview turns green.</li></ol></figure>
+</section>
+
+<section class="sheet" id="level">
+  <h2><span class="n">4</span>I've finished a level's projects: complete the level</h2>
+  <p class="when">A level is done when its projects, its requirements and its completion request are all finished.</p>
+  <div class="lbl">Steps to follow</div>
+  <ol class="do">
+    <li>Finish every project in the level. Each one ends with <b>Complete My Project</b>.</li>
+    <li>If the level has <b>Electives</b>, pick and finish as many as it asks for.</li>
+    <li>If your level lists a <b>Successful Club Series</b> presentation, choose one and give it.</li>
+    <li>Open <b>Level N: …</b> then <b>Checklist and Completion</b>. Tick everything, answer the reflection questions, press <b>Complete My Requirements</b>.</li>
+    <li>Open <b>Level N Completion</b>, choose your club and press <b>Submit</b>.</li>
+  </ol>
+  <figure class="narrow"><figcaption>Step 2 · Electives: choosing your projects</figcaption><div class="frame"><img src="img/10-electives.png" alt="The Electives selection page"><span class="hl" style="left:48.900000000000006%;top:46.5%;width:24.220000000000002%;height:7.92%"><b class="">A</b></span><span class="hl" style="left:76.75%;top:53.88%;width:17.2%;height:34.54%"><b class="">B</b></span></div><ol class="callouts" style="counter-reset:c 0"><li>Each level with electives shows how many you need, for example <b>Minimum of 2 Required Projects</b>.</li><li>Projects you have picked and finished show <b>Completed</b>. Any picked project you have not finished can be your next project.</li></ol></figure>
+  <figure class="narrow"><figcaption>Step 3 · Successful Club Series</figcaption><div class="frame"><img src="img/08-club-series.png" alt="The Level Requirements step with the Successful Club Series choices"><span class="hl" style="left:35.010000000000005%;top:9.66%;width:51.690000000000005%;height:28.74%"><b class="">C</b></span><span class="hl" style="left:28.71%;top:61.15%;width:64.21%;height:21.45%"><b class="">D</b></span></div><ol class="callouts" style="counter-reset:c 2"><li>If your level lists a <b>Successful Club Series</b> presentation, you must complete one.</li><li>Select the presentation you will give. You can give it at any time.</li></ol></figure>
+</section>
+<section class="sheet">
+  <h2><span class="n">4</span>Complete the level (continued)</h2>
+  <figure class=""><figcaption>Step 4 · Checklist and Completion: the tick list</figcaption><div class="frame"><img src="img/09-checklist.png" alt="The Checklist and Completion step"><span class="hl" style="left:25.29%;top:6.68%;width:71.21%;height:7.17%"><b class="r">E</b></span><span class="hl" style="left:25.29%;top:12.49%;width:71.21%;height:7.17%"><b class="r">F</b></span><span class="hl" style="left:25.29%;top:53.26%;width:71.21%;height:16.689999999999998%"><b class="">G</b></span></div><ol class="callouts" style="counter-reset:c 4"><li>Tick the item for your elective projects once you have finished the number the level asks for.</li><li>Tick the item for your <b>Successful Club Series</b> presentation once you have given it.</li><li>When the checklist is complete, answer the reflection questions. The button is at the bottom (next picture).</li></ol></figure>
+  <figure class="wide"><figcaption>Step 4 · Checklist and Completion: the bottom of the page</figcaption><div class="frame"><img src="img/13-complete-my-requirements.png" alt="The bottom of the Checklist and Completion step with the Complete My Requirements button"><span class="hl" style="left:39.28%;top:40.89%;width:38.64%;height:11.42%"><b class="">H</b></span><span class="hl" style="left:50.660000000000004%;top:53.93%;width:15.95%;height:8.57%"><b class="bl">I</b></span></div><ol class="callouts" style="counter-reset:c 7"><li>At the bottom of <b>Checklist and Completion</b>, Base Camp asks whether you have finished the tasks for this level.</li><li>Press <b>Complete My Requirements</b> once the checklist is done and you have answered the reflection questions.</li></ol></figure>
+</section>
+<section class="sheet">
+  <h2><span class="n">4</span>Complete the level (continued)</h2>
+  <figure class="wide"><figcaption>Step 5 · Level N Completion: not ready yet</figcaption><div class="frame"><img src="img/14-level-completion.png" alt="The Level 3 Completion step with a red banner and a greyed-out Submit button"><span class="hl" style="left:22.61%;top:20.51%;width:71.97%;height:10.2%"><b class="">J</b></span><span class="hl" style="left:45.36%;top:49.04%;width:26.470000000000002%;height:9.79%"><b class="">K</b></span><span class="hl" style="left:53.5%;top:61.95%;width:10.2%;height:8.43%"><b class="">L</b></span></div><ol class="callouts" style="counter-reset:c 9"><li>A red banner, “Completion of all projects in this level is required.”, means something is still unfinished.</li><li>Choose your <b>Club</b>. Credit for the level goes to the club shown.</li><li><b>Submit</b> is greyed out until every project in the level is complete. When it is ready, press it to send a level completion request to your Base Camp manager.</li></ol></figure>
+  <figure class="wide"><figcaption>Step 5 · Level N Completion: finished</figcaption><div class="frame"><img src="img/15-level-complete.png" alt="The Level 2 Completion step showing Congratulations, this level is complete"><span class="hl" style="left:-0.14%;top:88.85%;width:17.47%;height:8.71%"><b class="">M</b></span><span class="hl" style="left:51.45%;top:71.87%;width:14.17%;height:11.83%"><b class="">N</b></span></div><ol class="callouts" style="counter-reset:c 12"><li>The <b>Level N Completion</b> row is the last item in each level.</li><li>A finished level shows <b>Congratulations! This level is complete.</b></li></ol></figure>
+  <div class="tip"><b>Heads-up:</b> Base Camp ticks “Level N Requirements” just for opening it, so a level can show green ticks while its checklist is still unfinished. Always open the level and look.</div>
+</section>
+
+<section class="sheet" id="path">
+  <h2><span class="n">5</span>I've finished every level: complete my path</h2>
+  <p class="when">Use this after Level 5 (or the last level of your path).</p>
+  <div class="lbl">Steps to follow</div>
+  <ol class="do">
+    <li>Check that every level shows <b>Level N Completion</b> as complete.</li>
+    <li>Finish the <b>Reflect on Your Path</b> project like any other: its steps, then <b>Complete My Project</b>.</li>
+    <li>Open <b>Path Completion</b>, choose your club and press <b>Submit</b>. The request goes to your Base Camp manager.</li>
+  </ol>
+  <figure class="wide"><figcaption>Steps 2–3 · Reflect on Your Path and Path Completion</figcaption><div class="frame"><img src="img/16-path-completion.png" alt="The Path Completion step with a red banner and a greyed-out Submit button"><span class="hl" style="left:-0.14%;top:6.92%;width:18.130000000000003%;height:9.25%"><b class="">A</b></span><span class="hl" style="left:22.61%;top:13.99%;width:71.97%;height:10.2%"><b class="">B</b></span><span class="hl" style="left:53.5%;top:55.43%;width:10.2%;height:8.43%"><b class="">C</b></span></div><ol class="callouts" style="counter-reset:c 0"><li><b>Reflect on Your Path</b> is the last project. Finish it like any other project.</li><li>The red banner, “Completion of previous levels is required to send this approval request.”, means a level is still open.</li><li>Choose your <b>Club</b> and press <b>Submit</b> once the banner has gone.</li></ol></figure>
+</section>
+
+<section class="sheet" id="lost">
+  <h2><span class="n">6</span>I'm lost: where am I and what is next?</h2>
+  <p class="when">Use this any time. The Overview always shows what is done and what is not.</p>
+  <div class="lbl">Steps to follow</div>
+  <ol class="do">
+    <li>Open your path and click <b>Overview</b>, then <b>Expand all</b>.</li>
+    <li>Find the first grey outlined tick. That is your next item. (<b>Resume</b> also jumps to where you last were.)</li>
+    <li>Before moving to the next level, check its Level requirements and Level Completion rows.</li>
+  </ol>
+  <figure class=""><figcaption>Steps 1–2 · The Overview with levels expanded</figcaption><div class="frame"><img src="img/02-overview-levels.png" alt="The Overview with levels expanded, showing done and not-done marks"><span class="hl" style="left:27.57%;top:12.19%;width:23.67%;height:7.17%"><b class="br">A</b></span><span class="hl" style="left:27.57%;top:6.39%;width:23.67%;height:7.17%"><b class="">B</b></span><span class="hl" style="left:27.57%;top:30.05%;width:18.240000000000002%;height:7.17%"><b class="">C</b></span><span class="hl" style="left:44.730000000000004%;top:55.79%;width:9.48%;height:6.57%"><b class="r">D</b></span></div><ol class="callouts" style="counter-reset:c 0"><li>A <b>filled green tick</b> means the item is done.</li><li>A <b>grey outlined tick</b> means it is not done yet. The first item in a level (here “Level 3: Increasing Knowledge”) holds the level requirements and checklist.</li><li>Every level also ends with a completion item (here “Level 3 Completion”). These are easy to miss.</li><li><b>Last visited</b> marks the project you opened most recently.</li></ol></figure>
+  <footer>Screenshots are from the Toastmasters International Base Camp site and show its course content. This is an unofficial guide, not affiliated with or endorsed by Toastmasters International.</footer>
+</section>
+</body>
+</html>
